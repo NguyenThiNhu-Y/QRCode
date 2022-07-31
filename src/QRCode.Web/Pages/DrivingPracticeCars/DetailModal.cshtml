@@ -1,0 +1,230 @@
+﻿@page
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+
+@model QRCode.Web.Pages.DrivingPracticeCars.DetailModalModel
+@inject IStringLocalizer<QRCodeResource> L
+<link rel="stylesheet" abp-href="/view-resources/Areas/MyApp/Views/_Bundles/demo-ui-components.css" asp-append-version="true" />
+<style>
+    table {
+        border-spacing: 10px 30px;
+    }
+</style>
+<form method="post" asp-page="/DrivingPracticeCars/CreateModal">
+    <abp-card size="ExtraLarge">
+        <abp-card-header>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-card-title style="font-weight:bold; text-transform:uppercase; font-size:20px">@L["DetailDrivingPracticeCars"]</abp-card-title>
+                </abp-column>
+
+            </abp-row>
+        </abp-card-header>
+        <abp-card-body>
+            <abp-input asp-for="status"></abp-input>
+            @*Thông tin người nộp hồ sơ*@
+            <abp-row>
+                <abp-column size-md="_6" class="mb-3">
+                    <abp-card-title style="font-weight: bold; color: #0d6efd">@L["SubmitterInformation"]</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.FullName" disabled="true"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.DoB" type="date" disabled="true" />
+
+                </abp-column>
+                <abp-column size-md="_4" style="padding-left:1.5em">
+                    <div class="mb-3">
+                        <label class="form-label" for="SubmitterInformation.Gender">@L["Gender"]</label>
+                        <abp-radio asp-for="@Model.Gender" asp-items="@Model.GenderList" inline="true" disabled="true"></abp-radio>
+                        @*<abp-row>
+                        <div>
+                            <label class="col-2">
+                                <input class="form-check-input" type="radio" name="Gender" value="Male" required>Male
+                            </label>
+                            <label class="col-2">
+                                <input class="form-check-input" type="radio" name="Gender" value="Female">Female
+                            </label>
+                        </div>
+                    </abp-row>*@
+                    </div>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.IdentityCard" disabled="true"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.DateOfIssuanceOfIdentityCard" type="date" disabled="true" />
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.WhereProvide" disabled="true"></abp-input>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.Email" disabled="true"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.Address" disabled="true"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.PhoneNumber" disabled="true"></abp-input>
+                </abp-column>
+            </abp-row>
+
+            @*Thông tin chủ hồ sơ*@
+            <abp-row>
+                <abp-column size-md="_6" class="my-3">
+                    <abp-card-title style="font-weight: bold; color: #0d6efd">@L["ProfileOwnerInformation"]</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="License.ProfileOwner" disabled="true"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="License.Address" disabled="true"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="License.PhoneNumber" disabled="true"></abp-input>
+                </abp-column>
+            </abp-row>
+
+            @*Lĩnh vực*@
+            <abp-row>
+                <abp-column size-md="_8">
+                    <div class="mb-3">
+                        <label class="form-label">@L["ParentName"]</label>
+                        <input asp-for="Category.ParentName" readonly class="form-control" />
+                    </div>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <div class="mb-3">
+                        <label class="form-label">@L["Deadline"]</label>
+                        <input asp-for="Category.Deadline" readonly class="form-control" />
+                    </div>
+                </abp-column>
+            </abp-row>
+            <abp-column>
+                <div class="mb-3">
+                    <label class="form-label">@L["Name"]</label>
+                    <input asp-for="Category.Name" readonly class="form-control" />
+                </div>
+            </abp-column>
+
+            @*Trích yếu*@
+            <abp-input asp-for="License.Astract" value="@Model.License.Astract @L["for"]" disabled="true"></abp-input>
+
+            @*Xe tập lái*@
+            <abp-input asp-for="DrivingPracticeCar.TrainingPlaces" value="@Model.TrainingPlaces" disabled="true"></abp-input>
+
+            @*Danh sách xe đề nghỉ cấp giấy phép*@
+            <abp-row>
+                <abp-column size-md="_6" class="mb-3">
+                    <abp-card-title style="font-weight: bold; color: #0d6efd">@L["ListOfVehiclesToBeLicensed"]</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <table>
+                <thead>
+                    <tr>
+                        <th class="col-1">STT</th>
+                        <th class="col-1">Biển số đăng ký</th>
+                        <th class="col-1">Xe của cơ sở đào tạo</th>
+                        <th class="col-1">Loại xe</th>
+                        <th class="col-1">Xe hợp đồng</th>
+                        <th class="col-1">Nhãn hiệu</th>
+                        <th class="col-1">Số động cơ</th>
+                        <th class="col-1">Số khung</th>
+                        <th class="col-1">Ngày cấp</th>
+                        <th class="col-1">Ngày hết hạn</th>
+                        <th class="col-1">Ghi chú</th>
+
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+                    @foreach (var item in Model.ListDrvingPracticeCar)
+                    {
+                        <tr>
+                            <td class="col-1" id="STT">
+                                1
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.RegisterLicensePlates" value="@item.RegisterLicensePlates" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.VehicleOfTheTrainingInstitution" value="@item.VehicleOfTheTrainingInstitution" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.CategoryCar" value="@item.CategoryCar" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.ContractCar" value="@item.ContractCar" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.Brand" value="@item.Brand" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.EngineNumber" value="@item.EngineNumber" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.FrameNumber" value="@item.FrameNumber" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.StartDate" value="@item.StartDate.ToString("yyyy-MM-dd")" type="date" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.EndDate" value="@item.EndDate.ToString("yyyy-MM-dd")" type="date" readonly />
+                            </td>
+                            <td class="col-1">
+                                <input class="form-control" asp-for="DrivingPracticeCar.Note" value="@item.Note" readonly />
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <abp-row>
+                <abp-column size-md="_6" class="my-3">
+                    <abp-card-title style="font-weight: bold; color: #0d6efd">@L["ProfileComposition"]</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <table>
+                <thead style="text-align:left">
+                    <tr class="col">
+                        <th class="col-lg-1">STT</th>
+                        <th class="col-lg-4">@L["Description"]</th>
+                        <th class="col-lg-1">@L["File"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-lg-1">1</td>
+                        <td class="col-lg-4">@L["VehicleRegistrationCertificate(CopyWithTheOriginalForComparisonOrACertifiedCopy)"]</td>
+                        <td class="col-lg-1">
+                            <ol>
+                                @foreach (var item in Model.License.Files)
+                                {
+                                    var url = "/UploadFileLicenses/" + item;
+                                    <li>
+                                        <a href="@url">@item</a>
+                                    </li>
+
+                                }
+                            </ol>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </abp-card-body>
+        <abp-card-footer>
+            <a href="/DrivingPracticeCars?IdCater=@Model.Id" class="btn btn-secondary">@L["Back"]</a>
+        </abp-card-footer>
+    </abp-card>
+</form>

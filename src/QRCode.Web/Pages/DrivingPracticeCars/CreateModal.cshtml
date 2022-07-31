@@ -1,0 +1,286 @@
+﻿@page
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+
+@model QRCode.Web.Pages.DrivingPracticeCars.CreateModalModel
+@inject IStringLocalizer<QRCodeResource> L
+@*<link rel="stylesheet" abp-href="/view-resources/Areas/MyApp/Views/_Bundles/demo-ui-components.css" asp-append-version="true" />*@
+<style>
+    table {
+        border-spacing: 10px 30px;
+    }
+
+    .file {
+        display: flex;
+        justify-content: space-between;
+    }
+    .color {
+        color: #0d6efd;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+<abp-script src="/Pages/DrivingPracticeCars/CreateModal.js"></abp-script>
+
+<form method="post" asp-page="/DrivingPracticeCars/CreateModal" enctype="multipart/form-data">
+    <abp-card size="ExtraLarge">
+        <abp-card-header>
+            <abp-row>
+                <abp-column size-md="_6">
+                    <abp-card-title style="font-weight:bold; text-transform:uppercase; font-size:20px">@L["NewCategory"]</abp-card-title>
+                </abp-column>
+
+            </abp-row>
+        </abp-card-header>
+        <abp-card-body>
+            @*Thông tin người nộp hồ sơ*@
+            <abp-row>
+                <abp-column size-md="_6" class="mb-3">
+                    <abp-card-title style="font-weight: bold; color: #0d6efd">@L["SubmitterInformation"]</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.FullName" pattern="[a-z]"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.DoB" type="date" abp-data-datepicker="false" />
+
+                </abp-column>
+                <abp-column size-md="_4" style="padding-left:1.5em">
+                    <div class="mb-3">
+                        <label class="form-label" for="SubmitterInformation.Gender">@L["Gender"]</label>
+                        <abp-row>
+                            <div>
+                                <label class="col-2">
+                                    <input class="form-check-input" type="radio" name="Gender" value="Male" required>Male
+                                </label>
+                                <label class="col-2">
+                                    <input class="form-check-input" type="radio" name="Gender" value="Female">Female
+                                </label>
+                            </div>
+                        </abp-row>
+                    </div>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.IdentityCard" type="phonenumber"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.DateOfIssuanceOfIdentityCard" type="date" abp-data-datepicker="false" />
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.WhereProvide"></abp-input>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.Email" type="email"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.Address"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="SubmitterInformation.PhoneNumber" type="phonenumber"></abp-input>
+                </abp-column>
+            </abp-row>
+
+            @*Thông tin chủ hồ sơ*@
+            <abp-row>
+                <abp-column size-md="_6" class="my-3">
+                    <abp-card-title style="font-weight: bold; color: #0d6efd">@L["ProfileOwnerInformation"]</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="License.ProfileOwner"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="License.Address"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="License.PhoneNumber"></abp-input>
+                </abp-column>
+            </abp-row>
+
+            @*Lĩnh vực*@
+            <abp-row>
+                <input asp-for="Category.Id" hidden />
+                <abp-column size-md="_8">
+                    <abp-input asp-for="Category.ParentName" disabled="true"></abp-input>
+                </abp-column>
+                <abp-column size-md="_4">
+                    <abp-input asp-for="Category.Deadline" disabled="true"></abp-input>
+                </abp-column>
+            </abp-row>
+            <abp-input asp-for="Category.Name" disabled="true"></abp-input>
+
+
+            @*Trích yếu*@
+            <abp-input asp-for="License.Astract" value="@Model.Category.Name @L["for"]"></abp-input>
+
+            @*Xe tập lái*@
+            <abp-input asp-for="DrivingPracticeCar.TrainingPlaces"></abp-input>
+
+            @*Danh sách xe đề nghỉ cấp giấy phép*@
+            <abp-row>
+                <abp-column size-md="_6" class="my-3">
+                    <abp-card-title style="font-weight: bold; color: #0d6efd">@L["ListOfVehiclesToBeLicensed"]</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <table class="mb-3">
+                <thead>
+                    <tr>
+                        <th class="col-1">STT</th>
+                        <th class="col-1">Biển số đăng ký</th>
+                        <th class="col-1">Xe của cơ sở đào tạo</th>
+                        <th class="col-1">Loại xe</th>
+                        <th class="col-1">Xe hợp đồng</th>
+                        <th class="col-1">Nhãn hiệu</th>
+                        <th class="col-1">Số động cơ</th>
+                        <th class="col-1">Số khung</th>
+                        <th class="col-1">Ngày cấp</th>
+                        <th class="col-1">Ngày hết hạn</th>
+                        <th class="col-1">Ghi chú</th>
+                        <th class="col-1">
+                            <a class="bg-success btn-sm" onclick="create_tr('table_body', this)">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="table_body">
+                    <tr>
+                        <td class="col-1" id="STT">
+                            1
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.RegisterLicensePlates" placeholder="@L["RegisterLicensePlates"]" />
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.VehicleOfTheTrainingInstitution" placeholder="@L["VehicleOfTheTrainingInstitution"]" />
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.CategoryCar" placeholder="@L["CategoryCar"]" />
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.ContractCar" placeholder="@L["ContractCar"]" />
+                        </td>
+                        <td class="col-1">
+                            @*<input class="form-control" asp-for="DrivingPracticeCar.Brand" placeholder="@L["Brand"]" />*@
+                            <select asp-for="DrivingPracticeCar.Brand" class="form-control">
+                                <option value="">@L["Brand"]</option>
+                                @foreach (var item in Model.brands)
+                                {
+                                    <option value="@item.Name">@item.Name</option>
+                                }
+                            </select>
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.EngineNumber" placeholder="@L["EngineNumber"]" min="0" />
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.FrameNumber" placeholder="@L["FrameNumber"]" min="0" />
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.StartDate" placeholder="@L["StartDate"]" value="@DateTime.Now.ToString("yyyy-MM-dd")" type="date" abp-data-datepicker="false" />
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.EndDate" placeholder="@L["EndDate"]" value="@DateTime.Now.ToString("yyyy-MM-dd")" type="date" abp-data-datepicker="false" />
+                        </td>
+                        <td class="col-1">
+                            <input class="form-control" asp-for="DrivingPracticeCar.Note" placeholder="@L["Note"]" />
+                        </td>
+                        <th class="col-1">
+                            <a class="bg-danger btn-sm" onclick="remove_tr(this)">
+                                <i class="fa fa-close"></i>
+                            </a>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+
+            <abp-row>
+                <abp-column size-md="_6" class="my-3">
+                    <abp-card-title style="font-weight: bold; color: #0d6efd">@L["ProfileComposition"]</abp-card-title>
+                </abp-column>
+            </abp-row>
+            <table>
+                <thead style="text-align:left">
+                    <tr class="col">
+                        <th class="col-lg-1">STT</th>
+                        <th class="col-lg-4">@L["Description"]</th>
+                        <th class="col-lg-1">@L["File"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-lg-1">1</td>
+                        <td class="col-lg-4">@L["VehicleRegistrationCertificate(CopyWithTheOriginalForComparisonOrACertifiedCopy)"]</td>
+                        <td class="col-lg-1">
+                            <input type="file" class="btn btn-outline-primary p-1" id="choose" onchange="chooseFile(this)" />
+                            <div id="showfile">
+                                @*<a style="float:right"><i class="fa fa-close" ></i></a>*@
+                            </div>
+                            <script>
+                                
+                                
+                            </script>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </abp-card-body>
+        <abp-card-footer>
+            <a href="/DrivingPracticeCars?IdCater=@Model.Id" class="btn btn-secondary">@L["Cancel"]</a>
+            <button id="save" data-busy-text="Đang lưu..." class="btn btn-primary bkgrnd-cyan save-details" type="submit" name="save-details">@L["Save"]</button>
+        </abp-card-footer>
+    </abp-card>
+</form>
+<script>
+    @*function create_tr(table_id, This) {
+        var table_body = document.getElementById(table_id);
+        var first_tr = table_body.firstElementChild;
+        var tr_clone = first_tr.cloneNode(true);
+        table_body.append(tr_clone);
+        clean_tr_append(table_body.lastElementChild)
+
+        var stt = table_body.childElementCount
+        td_child = tr_clone.firstElementChild;
+        td_child.innerHTML = stt
+
+    }
+
+    function clean_tr_append(tr) {
+        var children = tr.children;
+        children = Array.isArray(children) ? children : Object.values(children);
+        children.forEach(x => {
+            if (x !== tr.lastElementChild) {
+                if (x.firstElementChild !== null) {
+                     x.firstElementChild.value = '';
+                }
+
+            }
+
+        });
+    }
+
+    function remove_tr(This) {
+        if (This.closest('tbody').childElementCount != 1) {
+            This.closest('tr').remove()
+        }
+
+        var childrenTr = document.getElementById("table_body").children;
+
+        childrenTr = Array.isArray(childrenTr) ? childrenTr : Object.values(childrenTr);
+        var index = 1;
+        childrenTr.forEach(x => {
+            x.firstElementChild.innerHTML = index++;
+        });
+
+    }*@
+
+</script>
+<abp-script src="/Pages/DrivingPracticeCars/CreateModal.js"></abp-script>

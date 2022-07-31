@@ -1,0 +1,41 @@
+﻿@page
+@model QRCode.Web.Pages.ProcessingLevels.IndexModel
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<QRCodeResource> L
+<link rel="stylesheet" href="~/style.css"/>
+@section scripts{
+    <script type="text/javascript" src="/Pages/ProcessingLevels/Index.js"></script>
+
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title style="font-weight:bold; text-transform:uppercase; font-size:20px">@L["ProcessingLevels"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right" style="text-align:right">
+                <abp-button id="NewProcessingLevel"
+                            text="@L["NewProcessingLevel"].Value"
+                            icon="plus"
+                            button-type="Primary"
+                            />
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-row >
+            <abp-column size-md="_4"></abp-column>
+            <abp-column size-md="_4" style="float:right">
+                <abp-select asp-for="Level" asp-items="@Model.LevelList"></abp-select>
+            </abp-column>
+            <abp-column size-md="_4" style="float:right">
+                <div class="mb-3">
+                    <label class="form-label">@L["Search"]</label>
+                    <input id="Search" name="Search" placeholder="@L["SearchFullName"]" class="form-control" /> @* add search input *@
+                </div>
+            </abp-column>
+        </abp-row>
+        <abp-table striped-rows="true" id="ProcessingLevelsTable"></abp-table>
+    </abp-card-body>
+</abp-card>

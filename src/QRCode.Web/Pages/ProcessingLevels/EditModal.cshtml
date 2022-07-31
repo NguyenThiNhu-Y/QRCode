@@ -1,0 +1,29 @@
+﻿@page
+@model QRCode.Web.Pages.ProcessingLevels.EditModalModel
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+
+@inject IStringLocalizer<QRCodeResource> L
+
+@{Layout = null;
+}
+<form method="post" asp-page="/ProcessingLevels/EditModal">
+    <abp-modal size="ExtraLarge">
+        <abp-modal-header>
+            <abp-row>
+                <abp-column>
+                    <abp-modal-title style="font-weight:bold; text-transform:uppercase; font-size:20px">@L["UpdateProcessingLevel"]</abp-modal-title>
+                </abp-column>
+            </abp-row>
+        </abp-modal-header>
+        <abp-modal-body>
+            <input asp-for="Id" hidden/>
+            <input asp-for="updateProcessingLevel.IdUser" hidden/>
+            <abp-input asp-for="@Model.FullName" disabled="true"></abp-input>
+            <abp-select asp-for="updateProcessingLevel.IdDepartment" asp-items="Model.DepartmentSelectListItem" />
+            <abp-select asp-for="updateProcessingLevel.Level" asp-items="Model.LevelList" />
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+</form>

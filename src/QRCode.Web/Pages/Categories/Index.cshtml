@@ -1,0 +1,35 @@
+﻿@page
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@model QRCode.Web.Pages.Categories.IndexModel
+@inject IStringLocalizer<QRCodeResource> L
+
+@section scripts{
+    <script type="text/javascript" src="/Pages/Categories/Index.js"></script>
+    
+}
+<link rel="stylesheet" href="/style.css" />
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title style="font-weight:bold; text-transform:uppercase; font-size:20px">@L["Categories"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right" style="text-align:right">
+                <abp-button id="NewCategoryButton"
+                    text="@L["NewCategory"].Value"
+                    icon="plus"
+                    button-type="Primary" 
+                    onclick="location.href='@Url.Action("CreateModal","Categories")'"/>
+                @*<button type="button" onclick="location.href='@Url.Action("CreateModal","Categories")'"> Button name</button>*@
+
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-column size-md="_4" style="float:right">
+            <input id="Search" name="Search" placeholder="@L["Search"]" class="form-control" onkeyup="search()" /> @* add search input *@
+        </abp-column>
+        <abp-table striped-rows="true" id="CategoriesTable"></abp-table>
+    </abp-card-body>
+</abp-card>

@@ -1,0 +1,60 @@
+﻿@page
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+
+@model QRCode.Web.Pages.Categories.DetailModalModel
+@inject IStringLocalizer<QRCodeResource> L
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+    <script>
+        $(function () {
+            var converter = new showdown.Converter();
+            var text = $("#summernote").val();
+            document.getElementById('detailDescription').innerHTML = converter.makeHtml(text);
+        })
+    </script>
+}
+<abp-card size="ExtraLarge">
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title style="font-weight:bold; text-transform:uppercase; font-size:20px">@L["DetailCategory"]</abp-card-title>
+            </abp-column>
+
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-input asp-for="Id" />
+        <div class="mb-3">
+            <label>@L["Name"]</label>
+            <input asp-for="Category.Name" required readonly class="form-control " />
+        </div>
+        @if (Model.CategoryParent != null)
+        {
+            <div class="mb-3">
+                <label>@L["IdParent"]</label>
+                <input asp-for="CategoryParent.Name" required readonly class="form-control " />
+            </div>
+        }
+
+        <div class="mb-3">
+            <label>@L["Deadline"]</label>
+            <input asp-for="Category.Deadline" required readonly class="form-control " />
+        </div>
+        @if (Model.Category.Description != null)
+        {
+            <div class="mb-3">
+                <label class="form-label">@L["Description"]</label>
+                <textarea asp-for="Category.Description" id="summernote" hidden></textarea>
+                <div id="detailDescription">
+
+                </div>
+            </div>
+        }
+
+    </abp-card-body>
+    <abp-card-footer>
+        <a href="/Categories" class="btn btn-secondary">@L["Back"]</a>
+    </abp-card-footer>
+</abp-card>

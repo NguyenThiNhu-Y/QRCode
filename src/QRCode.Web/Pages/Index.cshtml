@@ -1,0 +1,86 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.Localization
+@using QRCode.Localization
+@using Volo.Abp.Users
+@model QRCode.Web.Pages.IndexModel
+@inject IHtmlLocalizer<QRCodeResource> L
+@inject ICurrentUser CurrentUser
+@*@{
+    Layout = null;
+            }*@
+@section styles {
+    <abp-style src="/Pages/Index.css" />
+   
+
+}
+@section scripts {
+    <abp-script src="/Pages/Index.js" />
+    <abp-script src="/Pages/DrivingPracticeCars/Index.js" />
+    
+}
+
+<!-- Small boxes (Stat box) -->
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+            <div class="inner">
+                <h3>@Model.CountLicenseWaiting</h3>
+
+                <p>@L["Waiting"]</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-clock-o"></i>
+            </div>
+            @*<a href="/DrivingPracticeCars?IdCater=2d58cc42-35d3-8295-6e82-3a03aadd6b1f&status=Waiting" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>*@
+            <a href="#" onclick="LoadLicensByStatus('Waiting')" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+            <div class="inner">
+                <h3>@Model.CountLicenseApproved</h3>
+
+                <p>@L["Approved"]</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-check"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>@Model.CountLicenseRejected</h3>
+
+                <p>@L["Rejected"]</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-times"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>@Model.CountLicenseTakeBacked</h3>
+
+                <p>@L["TakeBacked"]</p>
+            </div>
+            <div class="icon">
+                <i class="fa fa-undo"></i>
+            </div>
+            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <!-- ./col -->
+</div>
+<!-- /.row -->

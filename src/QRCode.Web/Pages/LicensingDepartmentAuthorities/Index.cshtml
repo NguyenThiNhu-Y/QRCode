@@ -1,0 +1,44 @@
+﻿@page
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@model QRCode.Web.Pages.LicensingDepartmentAuthorities.IndexModel
+@inject IStringLocalizer<QRCodeResource> L
+
+@section scripts{
+    <script type="text/javascript" src="/Pages/LicensingDepartmentAuthorities/Index.js"></script>
+
+}
+<link rel="stylesheet" href="/style.css" />
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title style="font-weight:bold; text-transform:uppercase; font-size:20px">@L["LicensingDepartmentAuthorities"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right" style="text-align:right">
+                <abp-button id="NewLicensingDepartmentAuthorityButton"
+                            text="@L["NewLicensingDepartmentAuthority"].Value"
+                            icon="plus"
+                            button-type="Primary"></abp-button>
+
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-row>
+            <abp-column size-md="_4" style="float:right">
+            </abp-column>
+            <abp-column size-md="_4" style="float:right">
+                <abp-select asp-for="IdCategory" asp-items="Model.CategoryListItem"></abp-select>
+            </abp-column>
+            <abp-column size-md="_4" style="float:right">
+                <div class="mb-3">
+                    <label class="form-label">@L["Search"]</label>
+                    <input id="Search" name="Search" placeholder="@L["SearchDepartment"]" class="form-control" onkeyup="search()" /> @* add search input *@
+
+                </div>
+            </abp-column>
+        </abp-row>
+        <abp-table striped-rows="true" id="LicensingDepartmentAuthorityTable"></abp-table>
+    </abp-card-body>
+</abp-card>

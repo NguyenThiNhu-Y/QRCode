@@ -1,0 +1,27 @@
+﻿@page
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@model QRCode.Web.Pages.SubmitterInformations.IndexModel
+@inject IStringLocalizer<QRCodeResource> L
+
+@section scripts{
+    <script type="text/javascript" src="/Pages/SubmitterInformations/Index.js"></script>
+
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["SubmitterInformations"]</abp-card-title>
+            </abp-column>
+            
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-column size-md="_4" style="float:right">
+            <input id="Search" name="Search" placeholder="@L["Search"]" class="form-control" onkeyup="search()" /> @* add search input *@
+        </abp-column>
+        <abp-table striped-rows="true" id="SubmitterInformationsTable"></abp-table>
+    </abp-card-body>
+</abp-card>

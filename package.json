@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@abp/bootstrap-datepicker": "^5.2.1"
+  }
+}

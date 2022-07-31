@@ -1,0 +1,56 @@
+﻿@page
+@using QRCode.Localization
+@using Microsoft.Extensions.Localization
+@model QRCode.Web.Pages.DrivingPracticeCars.IndexModel
+@inject IStringLocalizer<QRCodeResource> L
+
+@using QRCode.Permissions
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+
+@section scripts{
+    <script type="text/javascript" src="/Pages/DrivingPracticeCars/Index.js"></script>
+
+}
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title style="font-weight:bold; text-transform:uppercase; font-size:20px">@L["DrivingPracticeCars"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right" style="text-align:right">
+                @{ var url = @Url.Action("CreateModal", "DrivingPracticeCars") + $"?Id={Model.IdCater}";}
+                @if (await AuthorizationService.IsGrantedAsync(QRCodePermissions.QRCode.Create))
+                {
+                    <abp-button id="NewDrivingPracticeCarButton"
+                                text="@L["NewDrivingPracticeCar"].Value"
+                                icon="plus"
+                                button-type="Primary"
+                                onclick="location.href='@url'" />
+                }
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+
+        <abp-row>
+            <abp-column size-md="_4">
+                <abp-select asp-for="Time" asp-items="@Model.TimeList" onchange="Status()"></abp-select>
+            </abp-column>
+            <abp-column size-md="_4" style="float:right">
+                <abp-select asp-for="status" asp-items="@Model.StatusList" onchange="Status()"></abp-select>
+            </abp-column>
+            <abp-column size-md="_4" style="float:right">
+                <div class="mb-3">
+                    <label class="form-label">@L["Search"]</label>
+                    <input id="Search" name="Search" placeholder="@L["SearchProfileOwner"]" class="form-control" onkeyup="search()" /> @* add search input *@
+
+                </div>
+            </abp-column>
+        </abp-row>
+        <abp-table striped-rows="true" id="DrivingPracticeCarsTable"></abp-table>
+    </abp-card-body>
+</abp-card>
+
+@*onclick ="location.href='@Url.Action("CreateModal", "DrivingPracticeCars")?Id=Model.Id'" />*@
+@*onclick ="@url"*@
